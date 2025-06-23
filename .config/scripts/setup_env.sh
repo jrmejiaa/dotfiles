@@ -10,7 +10,7 @@ NVIM_PATH="/opt/nvim/"
 install_deps() {
     echo "Installing Debian/Ubuntu required packages..."
     sudo apt update
-    sudo apt install -y stow git build-essential fzf zsh curl tmux
+    sudo apt install -y stow git build-essential zsh curl tmux
 
     echo "Installing Oh My Zsh..."
     git clone https://github.com/ohmyzsh/ohmyzsh.git $OH_MY_ZSH
@@ -27,7 +27,11 @@ install_deps() {
     echo "Installing latest NVIM on system..."
     curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz
     tar -xzf nvim-linux-x86_64.tar.gz
-    mv nvim-linux-x86_64 "${NVIM_PATH}" 
+    sudo mv nvim-linux-x86_64 "${NVIM_PATH}"
+
+    echo "Installing fzf: A command-line fuzzy finder"
+    git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}/.fzf"
+    "${HOME}"/.fzf/install
 
     echo "Installing better find: fd..."
     curl -LO https://github.com/sharkdp/fd/releases/download/v10.2.0/fd_10.2.0_amd64.deb
