@@ -31,7 +31,8 @@ install_deps() {
 
     echo "Installing fzf: A command-line fuzzy finder"
     git clone --depth 1 https://github.com/junegunn/fzf.git "${HOME}/.fzf"
-    "${HOME}"/.fzf/install
+    "${HOME}"/.fzf/install --bin
+    sudo mv "${HOME}"/.fzf/bin/fzf /usr/bin
 
     echo "Installing better find: fd..."
     curl -LO https://github.com/sharkdp/fd/releases/download/v10.2.0/fd_10.2.0_amd64.deb
