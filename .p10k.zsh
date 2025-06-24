@@ -34,6 +34,7 @@
     # =========================[ Line #1 ]=========================
     os_icon                 # os identifier
     bitbake                 # user-defined segment (see prompt_bitbake function below)
+    context                 # user@hostname
     dir                     # current directory
     vcs                     # git status
     # =========================[ Line #2 ]=========================
