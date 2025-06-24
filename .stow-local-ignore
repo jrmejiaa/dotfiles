@@ -18,6 +18,9 @@ _darcs
 # Remove scripts folder from the stow
 scripts
 
+# Remove editorconfig from stow
+\.editorconfig
+
 .+~          # emacs backup files
 \#.*\#       # emacs autosave files
 
