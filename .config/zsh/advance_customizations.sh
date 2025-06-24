@@ -7,10 +7,12 @@
 # big with these configurations, I prefer to put it here.
 #
 
+# This lines avoids that tmux creates auto titles on panes
+export DISABLE_AUTO_TITLE='true'
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$("${HOME}/.miniconda/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
-# shellcheck disable=SC2181
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
@@ -24,8 +26,7 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 # Trick to avoid fetching binaries that does not exists in container
-cmds="$(which fzf)"
-if [ -n "$cmds" ]; then
+if which fzf &> /dev/null; then
     # Set up fzf key bindings and fuzzy completion
     source <(fzf --zsh)
 

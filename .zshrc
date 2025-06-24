@@ -43,5 +43,7 @@ alias c="clear"
 # Source advance customizations
 . "$HOME/.config/zsh/advance_customizations.sh"
 
-# Source work things
-. "$HOME/.work.sh"
+# Source things that makes my working life easier
+. "$HOME/.config/zsh/bitbake_helpers.sh"
+. "$HOME/.config/zsh/git_helpers.sh"
+. "$HOME/.config/zsh/work_related.sh"
