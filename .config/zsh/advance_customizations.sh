@@ -1,5 +1,12 @@
 #!/usr/bin/bash
 
+#
+# This file is meant for all those configuration that are found really cool on
+# internet that improves my productivity but I did not create and most likely
+# do not understand completely. In order to avoid making the zshrc file really
+# big with these configurations, I prefer to put it here.
+#
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$("${HOME}/.miniconda/bin/conda" 'shell.zsh' 'hook' 2> /dev/null)"
