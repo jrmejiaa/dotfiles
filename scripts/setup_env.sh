@@ -99,7 +99,7 @@ install_cargo_pkgs() {
 
 install_tmuxp() {
     echo "Install tmuxp: a session manager for tmux"
-    pip install --user tmuxp
+    pip install --user --break-system-packages tmuxp
 }
 
 install_deps() {
