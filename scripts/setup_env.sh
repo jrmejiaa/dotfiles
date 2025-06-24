@@ -109,7 +109,7 @@ install_deps() {
     install_nvim
     install_fzf
     install_fd
-    install_ba
+    install_bat
     install_cargo
     install_cargo_pkgs
     install_tmuxp
