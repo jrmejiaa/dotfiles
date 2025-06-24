@@ -78,6 +78,7 @@ install_cargo_pkgs() {
     echo "Installing packages via cargo..."
     cargo install eza
     cargo install zoxide --locked
+    cargo install git-delta
 }
 
 install_tmuxp() {

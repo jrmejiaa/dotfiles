@@ -1,0 +1,35 @@
+[user]
+    name = Jairo R. Mejia Aponte
+    email = jairo.mejia.2708@gmail.com
+
+[pull]
+    rebase = true
+
+[filter "spacify"]
+    clean = expand --tabs=4 --initial
+
+[core]
+    pager = delta
+    editor = nvim
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true         # Use n and N to move between diff sections
+    line-numbers = true     # Add line numbers to the diff
+    # side-by-side = true
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
+# In case that needs to be change the default information
+[includeIf "gitdir:~/Documents/work/nrsw/**"]
+    path = ~/Documents/work/nrsw/.gitconfig
+[includeIf "gitdir:~/Documents/work/prism/**"]
+    path = ~/Documents/work/prism/.gitconfig
+[includeIf "gitdir:~/build**"]
+    path = ~/build/.gitconfig
