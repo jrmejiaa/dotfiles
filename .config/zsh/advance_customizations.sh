@@ -27,6 +27,9 @@ unset __conda_setup
 
 # Trick to avoid fetching binaries that does not exists in container
 if which fzf &> /dev/null; then
+    # Prepare to use direnv on ZSH
+    eval "$(direnv hook zsh)"
+
     # Set up fzf key bindings and fuzzy completion
     source <(fzf --zsh)
 
