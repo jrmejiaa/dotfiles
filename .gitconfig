@@ -31,5 +31,5 @@
     path = ~/Documents/work/nrsw/.gitconfig
 [includeIf "gitdir:~/Documents/work/prism/**"]
     path = ~/Documents/work/prism/.gitconfig
-[includeIf "gitdir:~/build**"]
-    path = ~/build/.gitconfig
+[includeif "gitdir:/opt/build/mejia/**"]
+    path = /opt/build/mejia/.gitconfig
