@@ -11,7 +11,7 @@ NVIM_PATH="/opt/nvim/"
 install_apt_pkgs() {
     echo "Installing Debian/Ubuntu required packages..."
     sudo apt update
-    sudo apt install -y stow git build-essential zsh curl tmux unzip python3-pip
+    sudo apt install -y stow git build-essential zsh curl tmux unzip direnv python3-pip
 }
 
 install_omz() {
