@@ -117,8 +117,12 @@ install_deps() {
 
 prepare_for_stow() {
     if [ ! -d "${HOME}/.config" ]; then
-        echo "Creating .config file to avoid a complete symlink"
+        echo "Creating .config dir to avoid a complete symlink"
         mkdir "${HOME}/.config"
+    fi
+    if [ ! -d "${HOME}/.local" ]; then
+        echo "Creating .local dir to avoid a complete symlink"
+        mkdir -p "${HOME}/.local/bin"
     fi
 }
 
