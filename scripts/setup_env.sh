@@ -94,6 +94,7 @@ install_cargo_pkgs() {
         cargo install eza
         cargo install zoxide --locked
         cargo install git-delta
+        cargo install ripgrep
     fi
 }
 
