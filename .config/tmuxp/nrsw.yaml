@@ -1,0 +1,68 @@
+session_name: HW${NB_HW}-${NB_PROFILE}-${NB_BASE_LAYER}
+windows:
+- window_name: dev-window
+  layout: tiled
+  shell_command_before:
+  - clear
+  panes:
+  - shell_command:
+    - export BITBAKE_PANE=bitbake
+    - conda activate bitbake-builds
+    - cd ${DIR_NRSW_YOCTO}/dev-v5.0.0-nrsw-oe
+    - export NRSW_TOP_DIR=${DIR_NRSW_YOCTO}/dev-v5.0.0-nrsw-oe
+    - export NRSW_PROFILE=${NB_PROFILE}
+    - export NB_ROOTFS_IMG_PATH=${NRSW_TOP_DIR}/out/build/nrsw/${NB_PROFILE}/${NB_ARCH}${NB_HW}/tmp-musl/deploy/images/${NB_ARCH}${NB_HW}/nrsw-rootfs-HW${NB_HW}-0.0.0.0.img
+    - export NB_ROOTFS_IMG_NAME=nrsw-rootfs-HW${NB_HW}-0.0.0.0.img
+    - . ./wrappers/wrapper_HW${NB_HW}_env.sh
+    - ds
+    - clear
+  - shell_command:
+    - sleep 2
+    - cd ${DIR_NRSW_YOCTO}/dev-v5.0.0-nrsw-oe/out/build/nrsw/${NB_PROFILE}/${NB_ARCH}${NB_HW}/
+    - clear
+  - shell_command:
+    - ssh ${NB_MACHINE}
+    - clear
+  - shell_command:
+    - ssh ${NB_MACHINE}
+    - clear
+    - tail-log
+- window_name: v5.0-dirs
+  layout: tiled
+  shell_command_before:
+  - clear
+  panes:
+  - cd ${DIR_NRSW_YOCTO}/dev-v5.0.0-nrsw-oe; gl && clear
+  - cd ${DIR_NRSW_YOCTO}/dev-v5.0.0-nrsw-oe/meta-nrsw-${NB_PROFILE} && gl && clear
+  - cd ${DIR_NRSW_YOCTO}/v5.0.0-nrsw-oe; gl && clear
+  - cd ${DIR_NRSW_YOCTO}/v5.0.0-nrsw-oe/meta-nrsw-${NB_PROFILE}; gl && clear
+- window_name: v4.9-dirs
+  layout: tiled
+  shell_command_before:
+  - clear
+  panes:
+  - cd ${DIR_NRSW_YOCTO}/dev-v4.9.0-nrsw-oe; gl && clear
+  - cd ${DIR_NRSW_YOCTO}/dev-v4.9.0-nrsw-oe/meta-nrsw-${NB_PROFILE} && gl && clear
+  - cd ${DIR_NRSW_YOCTO}/v4.9.0-nrsw-oe; gl && clear
+  - cd ${DIR_NRSW_YOCTO}/v4.9.0-nrsw-oe/meta-nrsw-${NB_PROFILE}; gl && clear
+- window_name: v4.8-dirs
+  layout: tiled
+  shell_command_before:
+  - clear
+  panes:
+  - cd ${DIR_NRSW_YOCTO}/dev-v4.8.0-nrsw-oe; gl && clear
+  - cd ${DIR_NRSW_YOCTO}/dev-v4.8.0-nrsw-oe/meta-nrsw-${NB_PROFILE}; gl && clear
+  - cd ${DIR_NRSW_YOCTO}/v4.8.0-nrsw-oe; gl && clear
+  - cd ${DIR_NRSW_YOCTO}/v4.8.0-nrsw-oe/meta-nrsw-${NB_PROFILE}; gl && clear
+- window_name: v4.6-dirs
+  layout: tiled
+  shell_command_before:
+  - clear
+  panes:
+  - cd ${DIR_NRSW_YOCTO}/dev-v4.6.0-nrsw-oe; gl && clear
+  - cd ${DIR_NRSW_YOCTO}/dev-v4.6.0-nrsw-oe/meta-nrsw-${NB_PROFILE}; gl && clear
+  - cd ${DIR_NRSW_YOCTO}/v4.6.0-nrsw-oe; gl && clear
+  - cd ${DIR_NRSW_YOCTO}/v4.6.0-nrsw-oe/meta-nrsw-${NB_PROFILE}; gl && clear
+- window_name: serial-console
+  shell_command:
+  - clear

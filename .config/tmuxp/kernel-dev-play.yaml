@@ -1,0 +1,21 @@
+session_name: KERNEL-DEV-PLAYGROUND
+windows:
+- window_name: dev-window
+  layout: tiled
+  shell_command_before:
+  - clear
+  panes:
+  - shell_command:
+    - cd /home/mejia/Documents/work/training/kernel-driver-dev
+    - clear
+  - shell_command:
+    - cd /home/mejia/Documents/work/training/kernel-driver-dev
+    - clear
+  - shell_command:
+    - cd /home/mejia/Documents/work/training/kernel-driver-dev
+    - clear
+  - shell_command:
+    - clear
+- window_name: serial-console
+  shell_command:
+  - clear

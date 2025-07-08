@@ -1,0 +1,16 @@
+session_name: website
+windows:
+- window_name: dev window
+  layout: tiled
+  shell_command_before:
+  - cd /home/mejia/Documents/personal/my-web && clear
+  - source ~/.nvm.zsh
+  panes:
+  - shell_command: 
+    - npm run start
+  - shell_command:
+    - gs 
+  - shell_command:
+    - gs 
+  - shell_command:
+    - gs
