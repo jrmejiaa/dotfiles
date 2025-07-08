@@ -15,6 +15,9 @@ _darcs
 \.gitignore
 \.gitmodules
 
+# Remove VS Code folder from the stow
+\.vscode
+
 # Remove scripts folder from the stow
 scripts
 
