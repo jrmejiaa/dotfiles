@@ -1,0 +1,91 @@
+#!/bin/bash
+
+usage() {
+    echo "Purpose: Create a tmux session with a sourced wrapper for an oe-build-environment."
+    echo -e "\nUsage: $0 [options...] <hardware>"
+    echo "Options:"
+    echo " -p <oem profile name>    use profile name"
+    echo " -b <base layer name>     use base layer name <kirkstone/warrior>"
+    echo " -s <ssh-hw-name>         name of the SSH configuration for the HW"
+    echo " -C                       enable CVE checks"
+    echo ""
+    echo "usage: nrsw-tmux -p oem-hotsplots -b warrior -s nb2 HW20"
+    exit 0
+}
+
+get_architecture() {
+    local hw_no="$1"
+    if [[ $hw_no = "16" || $hw_no = "20" || $hw_no = "22" || $hw_no = "24" ]]; then
+        echo "am335x-nrhw"
+    elif [[ $hw_no = "14" || $hw_no = "17" ]]; then
+        echo "armada-385-nbhw"
+    elif [[ $hw_no = "18" ]]; then
+        echo "armada-385-nrhw"
+    elif [[ $hw_no = "25" || $hw_no = "26" ]]; then
+        echo "am335x-hw"
+    else
+        echo ""
+    fi
+}
+
+NB_PROFILE="netmodule"
+NB_HW=""
+NB_ARCH=""
+NB_BASE_LAYER=""
+NB_MACHINE="nb1"
+CHECK_CVE=0
+while getopts "b:p:s:C" args; do
+    case "${args}" in
+    C)
+        CHECK_CVE=1
+        ;;
+    p)
+        NB_PROFILE=${OPTARG}
+        ;;
+    b)
+        NB_BASE_LAYER=${OPTARG}
+        ;;
+    s)
+        NB_MACHINE=${OPTARG}
+        ;;
+    *)
+        usage
+        ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+if [ $# -ne 1 ]; then
+    usage
+fi
+
+if [ "$NB_BASE_LAYER" = "warrior" ]; then
+    echo "warrior layer is already deprecated in this context"
+    usage
+fi
+
+BOX_SELECTION=$1
+if [[ ${BOX_SELECTION} =~ ^HW* ]]; then
+    NB_HW="${BOX_SELECTION//[^0-9]/}"
+    NB_ARCH=$(get_architecture "$NB_HW")
+else
+    echo "$BOX_SELECTION"
+    usage
+fi
+
+if [[ -z $NB_ARCH ]]; then
+    echo "The hardware HW$NB_HW is not supported"
+    return 1
+fi
+
+
+# Export all the necessary variables for the tmuxp
+export NB_PROFILE=$NB_PROFILE
+export NB_HW=$NB_HW
+export NB_ARCH=$NB_ARCH
+export NB_BASE_LAYER=$NB_BASE_LAYER
+export CHECK_CVE=$CHECK_CVE
+export NB_MACHINE=$NB_MACHINE
+
+# Call the tmuxp with the settings
+tmuxp load nrsw

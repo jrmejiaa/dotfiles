@@ -1,0 +1,62 @@
+#!/bin/bash
+
+usage() {
+    echo "Purpose: Create a tmux session with a sourced wrapper for an oe-build-environment."
+    echo -e "\nUsage: $0 [options...] <hardware>"
+    echo "Options:"
+    echo " -s <ssh-hw-name>         name of the SSH configuration for the HW"
+    echo ""
+    echo "usage: nrsw-tmux -p oem-hotsplots -b warrior -s nb2 HW20"
+    exit 0
+}
+
+get_machine() {
+    _name_hw="$1"
+    if [[ "$_name_hw" == "nitroc" ]]; then
+        echo "cn9131-nitroc"
+    elif [[ "$_name_hw" == "gemini" ]]; then
+        echo ""
+    elif [[ "$_name_hw" == "qemu" ]]; then
+        echo "qemu_coreos_arm64"
+    else
+        echo ""
+    fi
+}
+
+NB_HW=""
+NB_MACHINE="nb1"
+while getopts "s:" args; do
+    case "${args}" in
+    s)
+        NB_MACHINE=${OPTARG}
+        ;;
+    *)
+        usage
+        ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+if [ $# -ne 1 ]; then
+    usage
+fi
+
+BOX_SELECTION=$1
+if [[ -n "${BOX_SELECTION}" ]]; then
+    NB_HW=$(get_machine "${BOX_SELECTION}")
+else
+    usage
+fi
+
+if [[ -z "$NB_HW" ]]; then
+    echo "The hardware $BOX_SELECTION / $NB_HW is not supported yet"
+    return 1
+fi
+
+
+# Export all the necessary variables for the tmuxp
+export NB_HW=$NB_HW
+export NB_MACHINE=$NB_MACHINE
+
+# Call the tmuxp with the settings
+tmuxp load prism
