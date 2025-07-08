@@ -1,0 +1,112 @@
+#!/usr/bin/env python3
+#
+# dtstree: display devicetree includes as a tree. Use $1 to filter the search
+# `.dts` files. If `$ARCH` is set, only devicetrees in `arch/$ARCH/` are
+# searched.
+#
+# SPDX-License-Identifier: MIT
+#
+# Sample output:
+#
+# ⟩ ARCH=arm64 dtstree j7200
+# ./arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts
+#     ./arch/arm64/boot/dts/ti/k3-j7200-som-p0.dtsi
+#         ./arch/arm64/boot/dts/ti/k3-j7200.dtsi
+#             ./arch/arm64/boot/dts/ti/k3-j7200-main.dtsi
+#             ./arch/arm64/boot/dts/ti/k3-j7200-mcu-wakeup.dtsi
+#
+# TODO: add command to list .dts files that include the argument .dtsi file.
+#
+# TODO: add command to list .dts files that (recursively) contain a given string.
+
+import argparse
+import os
+
+root = "."
+root_arch = os.path.join(root, "arch")
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument("search", nargs="?")
+args = parser.parse_args()
+
+search_term = args.search if isinstance(args.search, str) else ""
+
+dt_dirs = []
+env_arch = os.environ.get("ARCH", "")
+archs = os.listdir(root_arch) if env_arch == "" else [env_arch]
+for arch in archs:
+    dts_dir = os.path.join(root_arch, arch, "boot", "dts")  # Linux
+    if os.path.isdir(dts_dir):
+        dt_dirs.append(dts_dir)
+    dts_dir = os.path.join(root_arch, arch, "dts")  # U-Boot
+    if os.path.isdir(dts_dir):
+        dt_dirs.append(dts_dir)
+
+dts_files = []
+dtsi_files = []
+
+for dt_dir in dt_dirs:
+    for dir, _, filenames in os.walk(dt_dir):
+        for filename in filenames:
+            filepath = os.path.join(dir, filename)
+            if os.path.islink(filepath):
+                pass
+            elif filename.endswith(".dts"):
+                dts_files.append(filepath)
+            elif filename.endswith(".dtsi"):
+                dtsi_files.append(filepath)
+
+
+def get_file_includes(filepath):
+    with open(filepath, "r") as f:
+        for line in f:
+            line = line.strip()
+            include = None
+
+            # TODO: support '#\s+include' syntax
+
+            if line.startswith("/include/"):
+                line = line[len("/include/") :].strip()
+                if line.startswith('"') and line.endswith('"'):
+                    include = line[1:-1].strip()
+            elif line.startswith("#include"):
+                line = line[len("#include") :].strip()
+                if line.startswith('"') and line.endswith('"'):
+                    include = line[1:-1].strip()
+                elif line.startswith("<") and line.endswith(">"):
+                    include = line[1:-1].strip()
+
+            if include is None:
+                continue
+
+            ext = include[include.rfind(".") + 1 :]
+            if ext == "dts" or ext == "dtsi":
+                yield include, ext
+
+
+def print_includes(filepath, indent=0):
+    print("\t" * indent + filepath)
+
+    for include, ext in get_file_includes(filepath):
+        search_files = dts_files if ext == "dts" else dtsi_files
+        search = os.sep + include
+        for x in search_files:
+            if x.endswith(search):
+                print_includes(x, indent + 1)
+
+
+def find_parent_dts(str, mapping):
+    for x in mapping[str]:
+        if x.find("/") == -1:
+            x = str[: str.rfind("/") + 1] + x
+        ext = x[x.rfind(".") + 1 :]
+        if ext == "dts":
+            yield x
+        elif ext == "dtsi":
+            yield from find_parent_dts(x, mapping)
+
+
+for dts_file in dts_files:
+    if dts_file.find(search_term) != -1:
+        print_includes(dts_file)

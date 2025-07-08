@@ -1,0 +1,19 @@
+#!/bin/bash
+# rgdt: grep a DT tree.
+#
+# dtstree gets used to list devicetrees based on $1 as a search term, the
+# remaining arguments are passed to ripgrep.
+#
+# SPDX-License-Identifier: MIT
+#
+# Sample output:
+#
+# ⟩ rgdt j7200 sdhci0
+# ./arch/arm64/boot/dts/ti/k3-j7200-main.dtsi:529:	main_sdhci0: mmc@4f80000 {
+# ./arch/arm64/boot/dts/ti/k3-j7200.dtsi:33:		mmc0 = &main_sdhci0;
+# ./arch/arm64/boot/dts/ti/k3-j7200-common-proc-board.dts:257:&main_sdhci0 {
+
+targets="$(dtstree "$1")"
+if [ $? -eq 0 ]; then
+	echo "$targets" | xargs -L1 | sort --unique | xargs -r rg "${@:2}"
+fi
