@@ -15,7 +15,7 @@ get_machine() {
     if [[ "$_name_hw" == "nitroc" ]]; then
         echo "cn9131-nitroc"
     elif [[ "$_name_hw" == "gemini" ]]; then
-        echo ""
+        echo "gemini-01"
     elif [[ "$_name_hw" == "qemu" ]]; then
         echo "qemu_coreos_arm64"
     else
