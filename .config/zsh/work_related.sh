@@ -20,10 +20,12 @@ devnull_params="-o UserKnownHostsFile=/dev/null -o IdentityFile=/dev/null"
 alias scp-legacy="scp -O $basic_params $devnull_params"
 alias ssh-legacy="ssh $basic_params $devnull_params"
 
+alias fixdisplay='eval export $(tmux show-env | grep ^DISPLAY)'
+
 # In case we are inside of docker, which means that we are building warrior
 # This may not be compatible any longer with kirkstone, so we only share
 # between 4.6.X and 4.8.X
-if [[ ${HOST} == "bitbake" ]]; then
+if [[ ${HOST} == "docker_nrsw" ]]; then
     unset BB_ENV_PASSTHROUGH_ADDITIONS
     unset SSTATE_DIR
     unset DL_DIR

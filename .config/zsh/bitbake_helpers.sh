@@ -37,6 +37,10 @@ devr() {
             echo "   [ ${_upper_recipe_n} ]"
             echo "      - Resetting workspace in devtool."
             devtool reset "$p" >> "$_tmp_f" 2>&1
+            if [[ $? -ne 0 ]]; then
+                print_err_msg "[FAIL]. Please look log in $_tmp_f"
+                return 1
+            fi
         done
     else
         echo "No recipes given"
@@ -59,6 +63,7 @@ devm() {
             devtool modify "$p" > "$_tmp_f" 2>&1
             if [[ $? -ne 0 ]]; then
                 print_err_msg "[FAIL]. Please look log in $_tmp_f"
+                return 1
             else
                 echo "\033[32m[SUCCESS]\033[0m"
             fi
@@ -92,11 +97,13 @@ devb() {
     devtool build "$recipe_name"
     if [ $? -ne 0 ]; then
         print_err_msg "Devtool Build fails for recipe $1" "show_banner"
+        return 1
     fi
     if [[ -n "$live_target" ]]; then
         devtool deploy-target "$recipe_name" "$live_target"
         if [ $? -ne 0 ]; then
             print_err_msg "Devtool Deploy fails for recipe $1 on target $2" "show_banner"
+            return 1
         fi
     fi
 }
