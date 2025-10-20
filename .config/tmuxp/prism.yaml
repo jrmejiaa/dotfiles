@@ -43,6 +43,68 @@ windows:
   - cd ${OE_BELDEN_OS}/layers/coreos/ && clear
   - cd ${OE_BELDEN_OS}/layers/meta-netmodule-wlan/ && clear
   - cd ${OE_BELDEN_OS}/layers/ && clear
+- window_name: me-panes
+  layout: tiled
+  shell_command_before:
+  - ssh me
+  panes:
+  - clear
+  - clear
+  - clear
+  - clear
+- window_name: sandbox-branch
+  layout: tiled
+  shell_command_before:
+  - clear
+  - export OE_BELDEN_OS='${DIR_PRISM_YOCTO}/next-scarthgap-oe'
+  panes:
+  - shell_command:
+    - export BITBAKE_PANE=bitbake
+    - conda activate bitbake-builds
+    - cd ${OE_BELDEN_OS}
+    - . ./wrappers/wrapper_${NB_HW}.sh
+    - ds
+    - clear
+  - shell_command:
+    - sleep 2
+    - export BUILD_DIR="${OE_BELDEN_OS}/build"
+    - cd $BUILD_DIR
+    - clear
+  - shell_command:
+    - clear
+    - cd ${OE_BELDEN_OS}/
+    - clear
+  - shell_command:
+    - clear
+    - cd ${OE_BELDEN_OS}/
+    - clear
+- window_name: experimental-branch
+  layout: tiled
+  shell_command_before:
+  - clear
+  - export OE_BELDEN_OS='${DIR_PRISM_YOCTO}/scarthgap-oe'
+  panes:
+  - shell_command:
+    - export BITBAKE_PANE=bitbake
+    - conda activate bitbake-builds
+    - cd ${OE_BELDEN_OS}
+    - . ./wrappers/wrapper_${NB_HW}.sh
+    - export NB_ROOTFS_IMG_PATH=${OE_BELDEN_OS}/build/tmp/deploy/images/${MACHINE}/
+    - ds
+    - clear
+  - shell_command:
+    - sleep 2
+    - export BUILD_DIR="${OE_BELDEN_OS}/build"
+    - cd $BUILD_DIR
+    - clear
+  - shell_command:
+    - clear
+    - cd ${OE_BELDEN_OS}/
+    - clear
+  - shell_command:
+    - clear
+    - cd ${OE_BELDEN_OS}/
+    - clear
 - window_name: stable-branch
   layout: tiled
   shell_command_before:
