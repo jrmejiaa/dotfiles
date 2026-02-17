@@ -25,6 +25,13 @@ gcp() {
 # The results of this function copies on the clipboard the amount of hash commits
 # asked.
 get_commits() {
-  local num_commits=$1
-  git log -"$num_commits" --reverse --pretty=format:"%H" | tr '\n' ' ' | xclip -sel clip
+    local num_commits=$1
+    git log -"$num_commits" --reverse --pretty=format:"%H" | tr '\n' ' ' | xclip -sel clip
+}
+
+# Get the logs of the last number of commits given as parameter of the function.
+# The information is copied on the clipboard
+get_log_of_last_commits() {
+    local num_commits=$1
+    git log -"$num_commits" | xclip -sel clip
 }
