@@ -5,6 +5,9 @@
 [pull]
     rebase = true
 
+[push]
+    autoSetupRemote = true
+
 [filter "spacify"]
     clean = expand --tabs=4 --initial
 
