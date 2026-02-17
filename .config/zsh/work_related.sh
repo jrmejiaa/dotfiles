@@ -39,13 +39,14 @@ mk_branch_name() {
     local big_name="$1"
     local small_name="$2"
     local tp_case="tp$3"
+    local type_branch=${4:-"feature"}
 
     local pmd_num="000"
     local name_branch=""
     if [[ $# -eq 0 ]]; then
-        name_branch="feature/bil/default_nb/000/netmodule"
+        name_branch="feature/bil/default_nb/000/belden_basic"
     else
-        name_branch="feature/bil/${big_name}/${pmd_num}/${small_name}_${tp_case}"
+        name_branch="${type_branch}/bil/${big_name}/${pmd_num}/${small_name}_${tp_case}"
     fi
     echo "$name_branch" | xclip -sel clip
 }
