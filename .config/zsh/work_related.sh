@@ -7,6 +7,11 @@ else
     . "${HOME}/.work.env"
 fi
 
+# a stupid alias to avoid that yangcli-pro uses a cache on the client side
+# that do not allow to see the latest versions of the YANG files from the
+# server
+alias yangcli-pro="yangcli-pro --autoload-save-cache false --autoload-cache false --timeout 0 --log-stderr --log-level info"
+
 # Vars to change download and state cache of bitbake to a common place
 export YOCTO_EXPERT_MODE=1
 export BB_ENV_PASSTHROUGH_ADDITIONS="DL_DIR SSTATE_DIR BB_NUMBER_THREADS PARALLEL_MAKE YOCTO_EXPERT_MODE SSTATE_MIRRORS"
