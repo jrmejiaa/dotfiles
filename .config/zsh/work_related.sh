@@ -39,38 +39,48 @@ if [[ ${HOST} == "docker_nrsw" ]]; then
     export DL_DIR="$LEGACY_DL_DIR"
 fi
 
-# This is an stupid things that I have to do in my work just to create a branch :D
+# This is an stupid thing that I have to do in my work just to create a branch :D
 mk_branch_name() {
-    local big_name="$1"
-    local small_name="$2"
-    local tp_case="tp$3"
-    local type_branch=${4:-"feature"}
+    local jira_ticket="$1"
+    local big_name="$2"
+    local type_branch=${3:-"feature"}
 
-    local pmd_num="000"
     local name_branch=""
     if [[ $# -eq 0 ]]; then
         name_branch="feature/bil/default_nb/000/belden_basic"
     else
-        name_branch="${type_branch}/bil/${big_name}/${pmd_num}/${small_name}_${tp_case}"
+        name_branch="jira/${jira_ticket}/${type_branch}-${big_name}"
     fi
     echo "$name_branch" | xclip -sel clip
 }
 
-# A bitbake helper that checks if this build is for NRSW or PRISM.
+# A bitbake helper that checks if this build is for NRSW or PRISM
 bbrootfs() {
-    live_target="$1"
     is_nrsw="$(pwd | grep 'nrsw')"
     if [[ -n $is_nrsw ]]; then
         nice -n 19 bitbake nrsw-rootfs
-        if [[ $# -ne 0 ]]; then
-            scp "$NB_ROOTFS_IMG_PATH" "$live_target":
-            if [[ $? -ne 0 ]]; then
-                scp -O "$NB_ROOTFS_IMG_PATH" "$live_target":
-            fi
-            ssh "$live_target" -f "swupdate -r $NB_ROOTFS_IMG_NAME"
-            echo "swupdate running, SW Update is in progress in $live_target"
-        fi
     else
         nice -n 19 bitbake bil-image-default-dev
     fi
 }
+
+# A swupdate function to upload a new software version on the hardware
+swupdate() {
+    live_target="$1"
+    is_nrsw="$(pwd | grep 'nrsw')"
+    # Sending the image on the device
+    if [[ -n $live_target ]] && [[ -n $is_nrsw ]]; then
+        scp "$NB_ROOTFS_IMG_PATH" "$live_target":
+        if [[ $? -ne 0 ]]; then
+            scp -O "$NB_ROOTFS_IMG_PATH" "$live_target":
+        fi
+        ssh "$live_target" -f "swupdate -r $NB_ROOTFS_IMG_NAME"
+        echo "swupdate running on NRSW: SW Update is in progress in $live_target"
+    elif [[ -n $live_target ]]; then
+        echo "PRISM target found"
+        scp "$NB_ROOTFS_IMG_PATH" "$live_target":/tmp
+        echo "Calling swupdate-pipe"
+        ssh $live_target "/usr/local/bin/swu-pipe < /tmp/$NB_ROOTFS_IMG_NAME" || continue
+    fi
+}
+

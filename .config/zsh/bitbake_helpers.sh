@@ -107,3 +107,37 @@ devb() {
         fi
     fi
 }
+
+# Commit a SRCREV change on a bitbake recipe
+commit_srcrev() {
+    local diff
+    diff=$(git diff --cached --unified=0)
+
+    # Check that the only change is a SRCREV line
+    local additions removals
+    additions=$(echo "$diff" | grep -c '^+[^+]')
+    removals=$(echo "$diff" | grep -c '^-[^-]')
+    if [ "$additions" -ne 1 ] || [ "$removals" -ne 1 ]; then
+        echo "Error: staged diff contains more than just a SRCREV change" >&2
+        return 1
+    fi
+    if ! echo "$diff" | grep -q '^+SRCREV\|^+SRCREV '; then
+        echo "Error: staged change is not a SRCREV update" >&2
+        return 1
+    fi
+
+    # Extract recipe name from the diff header (filename without version and .bb)
+    local recipe_name
+    recipe_name=$(echo "$diff" | grep '^+++ b/' | head -1 | sed 's|.*/||; s|_[^_]*\.bb$||')
+
+    # Extract reduced commit hash (first 6 chars of new SRCREV)
+    local commit_hash
+    commit_hash=$(echo "$diff" | grep '^+SRCREV' | grep -o '"[^"]*"' | tr -d '"' | cut -c1-6)
+
+    # Extract JIRA ticket from branch name (any PROJECT-NUMBER pattern)
+    local jira_ticket
+    jira_ticket=$(git branch --show-current | grep -o '[A-Z]\{2,\}-[0-9]\+')
+
+    git commit -m "feat(${recipe_name}): Update recipe to last commit ${commit_hash}" -m "id: ${jira_ticket}"
+}
+

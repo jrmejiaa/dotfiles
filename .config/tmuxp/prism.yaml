@@ -13,7 +13,8 @@ windows:
     - conda activate bitbake-builds
     - cd ${OE_BELDEN_OS}
     - . ./wrappers/wrapper_${NB_HW}.sh
-    - export NB_ROOTFS_IMG_PATH=${OE_BELDEN_OS}/build/tmp/deploy/images/${MACHINE}/
+    - export NB_ROOTFS_IMG_NAME=bil-image-default-test-${MACHINE}.swu
+    - export NB_ROOTFS_IMG_PATH=${OE_BELDEN_OS}/build/tmp/deploy/images/${MACHINE}/${NB_ROOTFS_IMG_NAME}
     - ds
     - clear
   - shell_command:
@@ -26,7 +27,8 @@ windows:
     - conda activate bitbake-builds
     - cd ${OE_BELDEN_OS}
     - . ./wrappers/wrapper_${NB_HW}.sh
-    - export NB_ROOTFS_IMG_PATH=${OE_BELDEN_OS}/build/tmp/deploy/images/${MACHINE}/
+    - export NB_ROOTFS_IMG_NAME=bil-image-default-test-${MACHINE}.swu
+    - export NB_ROOTFS_IMG_PATH=${OE_BELDEN_OS}/build/tmp/deploy/images/${MACHINE}/${NB_ROOTFS_IMG_NAME}
     - ds
     - clear
   - shell_command:
