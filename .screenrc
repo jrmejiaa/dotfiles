@@ -1,0 +1,6 @@
+# Change from Ctrl + a to Ctrl + j
+escape ^Jj
+# Start every session with logging ON
+deflog on
+# Sets the default log file path and name
+logfile /home/mejia/Downloads/screen-logs/screen_%Y%m%d_%n.log
